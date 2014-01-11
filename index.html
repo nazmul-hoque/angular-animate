@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html id="ng-app" ng-app="app">
+<!-- id="ng-app" IE<8 -->
+
+<head>
+    <!--This CSS file from https://github.com/daneden/animate.css-->
+    <link rel="stylesheet" href="http://nervgh.github.io/css/animate.min.css" />
+
+    <style>
+        .animals {
+            border: 1px solid;
+            width: 900px;
+            height: 675px;
+            overflow: hidden;
+            text-align: center;
+            padding: 5px;
+        }
+
+            .animals img {
+                margin: 0 0 35px 0;
+                position: relative;
+            }
+    </style>
+    <!--Working with the version like 1.2.X-->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-animate.js"></script>
+    <script>
+        angular.module('app', ['ngAnimate'])
+            .run(function ($rootScope, $timeout) {
+                $rootScope.model = {};
+
+                $rootScope.model.transitions = 'bounce|bounceIn|bounceInDown|bounceInLeft|bounceInRight|bounceInUp|bounceOut|bounceOutDown|bounceOutLeft|bounceOutRight|bounceOutUp|fadeIn|fadeInDown|fadeInDownBig|fadeInLeft|fadeInLeftBig|fadeInRight|fadeInRightBig|fadeInUp|fadeInUpBig|fadeOut|fadeOutDown|fadeOutDownBig|fadeOutLeft|fadeOutLeftBig|fadeOutRight|fadeOutRightBig|fadeOutUp|fadeOutUpBig|flash|flip|flipInX|flipInY|flipOutX|flipOutY|hinge|lightSpeedIn|lightSpeedOut|pulse|rollIn|rollOut|rotateIn|rotateInDownLeft|rotateInDownRight|rotateInUpLeft|rotateInUpRight|rotateOut|rotateOutDownLeft|rotateOutDownRight|rotateOutUpLeft|rotateOutUpRight|shake|swing|tada|wobble'.split('|');
+                $rootScope.model.images = 'http://static.amiwithyou.com/images/Penguins(900x675).jpg |http://static.amiwithyou.com/images/Jellyfish(900x675).jpg|http://static.amiwithyou.com/images/Koala(900x675).jpg'.split('|');
+
+                $rootScope.tick = function () {
+                    $rootScope.model.images.unshift($rootScope.model.images.pop());
+                    $timeout($rootScope.tick, 2000);
+                };
+
+                $rootScope.tick();
+            });
+    </script>
+
+</head>
+<body>
+
+    <h1><a href="http://angularjs.org/" target="_blank">Angularjs</a>: dirty animations with <a href="https://github.com/daneden/animate.css" target="_blank">animate.css</a></h1>
+
+    Move:
+    <select ng-model="model.move"
+        ng-options="item for item in model.transitions"
+        ng-init="model.move = 'bounceInLeft'">
+    </select>
+
+    <div class="animals">
+        <img ng-repeat="item in model.images"
+            ng-src="{{ item }}"
+            class="animated {{model.move}}" />
+    </div>
+    <br />
+    <a href="http://daneden.me/animate/build/" target="_blank">Animate.css customization</a>
+    <br />
+    <br />
+
+    <h2>Transition list</h2>
+    <ul>
+        <li ng-repeat="item in model.transitions">{{ item }}</li>
+    </ul>
+
+</body>
+</html>
